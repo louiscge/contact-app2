@@ -6,6 +6,7 @@ import './App.css';
 import Header from "./Header";
 import AddContact from "./AddContact";
 import ContactList from "./ContactList";
+import ContactDetail from "./ContactDetail";
 
 
 
@@ -37,24 +38,34 @@ const removeContactHandler = (id) => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts));
   }, [contacts]);
 
- return (
-   <div className='ui container'>
-<Router>
-  <Routes>
-    <Route path="/add" element={<AddContact />} />
-    <Route path="/" element={<ContactList />} />
-    {/* <AddContact addContactHandler={addContactHandler}/> */ }
-    {/* <ContactList contacts={contacts} getContactId  = {removeContactHandler} /> */ } 
-  </Routes>
-</Router>
+  return (
+    <div className='ui container'>
+      <Router>
+      < Header />
+      <Switch>
+        <Route 
+          path="/" 
+          exact 
+          render={(props) => (
+            <ContactList 
+            {...props} 
+            contacts={contacts} 
+            getContactId  = {removeContactHandler}/>)}
+        />
+          <Route
+            path="/add" 
+            render={(props)=>(<AddContact {...props} addContactHandler={addContactHandler}/>)}
+          />
 
-
-
-   </div>
-  
+          <Route path="/contact/:id" component={ContactDetail}/>
+        </Switch>
+        
+          {/* <AddContact addContactHandler={addContactHandler}/> */ }
+          {/* <ContactList contacts={contacts} getContactId  = {removeContactHandler} /> */ }
+      </Router>
+    </div>
   );
+  
 }
 
-export default App;
-     {/* <AddContact addContactHandler={addContactHandler}/> */ }
-     {/* <ContactList contacts={contacts} getContactId  = {removeContactHandler} /> */ } 
+export default App;         
